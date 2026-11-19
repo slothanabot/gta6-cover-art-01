@@ -3,76 +3,77 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NEON GRID — Vice City Cover Maker</title>
-<link rel="stylesheet" href="neon.css">
+<title>Neon Grid — GTA 6 Cover Studio</title>
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><span class="brand-mark">NG</span>
-    <div><h1>NEON GRID</h1><p>Vice City cover maker &middot; your photos, your caption, one click to PNG</p></div>
-  </div>
-  <div class="top-actions">
-    <button id="loadDemo" type="button">Load demo photos</button>
-    <button id="exportBtn" type="button" class="primary">Export PNG</button>
-  </div>
-</header>
-
-<main class="shell">
+<main class="studio">
   <section class="panel" aria-label="Cover controls">
-    <h2>1 &middot; Photos — fill the grid</h2>
-    <p class="hint">Tap a cell to load your own photo. Each cell crops and positions independently. One photo can fill all four cells, or use four different ones.</p>
-    <div id="slots" class="slots"></div>
+    <h1>Neon Grid</h1>
+    <p class="tag">A photo and a caption, made into GTA&nbsp;6-style cover art. Works fully offline.</p>
 
-    <h2>2 &middot; Caption</h2>
-    <label class="field">Banner title
-      <input id="titleInput" type="text" value="VICE NIGHTS" maxlength="28" spellcheck="false">
+    <label class="field">Caption
+      <input id="caption" type="text" maxlength="28" value="Neon Nights">
     </label>
     <label class="field">Tagline
-      <input id="tagInput" type="text" value="One city. Every hustle." maxlength="48" spellcheck="false">
-    </label>
-    <label class="field">Name plate
-      <input id="nameInput" type="text" value="STARRING YOU" maxlength="28" spellcheck="false">
+      <input id="tagline" type="text" maxlength="40" value="Leonida &bull; Vice City">
     </label>
 
-    <h2>3 &middot; Layout</h2>
-    <div class="choices" id="layoutChoices">
-      <button type="button" data-layout="grid" class="choice on">2&times;2 Grid + banner</button>
-      <button type="button" data-layout="trio" class="choice">Trio strip</button>
-      <button type="button" data-layout="hero" class="choice">Hero + rail</button>
-    </div>
+    <fieldset class="field">
+      <legend>Layout</legend>
+      <div class="seg" id="layouts">
+        <button type="button" data-layout="grid" class="on">2 &times; 2 Grid</button>
+        <button type="button" data-layout="hero">Hero + Duo</button>
+        <button type="button" data-layout="trio">Trio Strip</button>
+      </div>
+    </fieldset>
 
-    <h2>4 &middot; Colour grade</h2>
-    <div class="choices" id="gradeChoices">
-      <button type="button" data-grade="sunset" class="choice on">Sunset</button>
-      <button type="button" data-grade="neon" class="choice">Neon Night</button>
-      <button type="button" data-grade="vice" class="choice">Vice Pink</button>
-      <button type="button" data-grade="teal" class="choice">Teal Dawn</button>
-      <button type="button" data-grade="gold" class="choice">Gold Rush</button>
-    </div>
+    <fieldset class="field">
+      <legend>Colour grade</legend>
+      <div class="swatches" id="grades">
+        <button type="button" data-grade="sunset" class="on" style="--sw1:#ff9a3d;--sw2:#ff2e63" title="Sunset">Sunset</button>
+        <button type="button" data-grade="neon" style="--sw1:#2b1055;--sw2:#ff2e88" title="Neon">Neon</button>
+        <button type="button" data-grade="vice" style="--sw1:#3b0f54;--sw2:#ff7b00" title="Vice">Vice</button>
+        <button type="button" data-grade="teal" style="--sw1:#062a33;--sw2:#00b4a2" title="Teal Dusk">Teal</button>
+        <button type="button" data-grade="gold" style="--sw1:#2b1608;--sw2:#ffb347" title="Golden Hour">Gold</button>
+      </div>
+    </fieldset>
 
-    <h2>5 &middot; Export size</h2>
-    <div class="choices" id="sizeChoices">
-      <button type="button" data-size="1080x1080" class="choice on">1080 &times; 1080</button>
-      <button type="button" data-size="1080x1350" class="choice">1080 &times; 1350</button>
-      <button type="button" data-size="1920x1080" class="choice">1920 &times; 1080</button>
-    </div>
-    <label class="check"><input id="palmToggle" type="checkbox" checked> Palm-silhouette dividers</label>
-    <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain + vignette</label>
-    <p class="status" id="status" role="status">Ready — load a photo to begin.</p>
+    <fieldset class="field">
+      <legend>Photos — one per panel</legend>
+      <div class="slots" id="slots"></div>
+      <p class="hint">Tap a panel to crop it. “Fill all” puts one photo in every panel.</p>
+      <div class="samples">
+        <button type="button" id="sample-boulevard">Sample: Boulevard</button>
+        <button type="button" id="sample-pier">Sample: Pier</button>
+      </div>
+    </fieldset>
+
+    <fieldset class="field" id="cropbox">
+      <legend>Crop panel <span id="crop-name">1</span></legend>
+      <label class="slider">Zoom <input id="zoom" type="range" min="1" max="2.5" step="0.01" value="1"></label>
+      <label class="slider">Pan left / right <input id="panx" type="range" min="-0.5" max="0.5" step="0.01" value="0"></label>
+      <label class="slider">Pan up / down <input id="pany" type="range" min="-0.5" max="0.5" step="0.01" value="0"></label>
+    </fieldset>
+
+    <label class="field">Export size
+      <select id="size">
+        <option value="1080x1080">1080 &times; 1080 — square post</option>
+        <option value="1080x1350">1080 &times; 1350 — portrait post</option>
+        <option value="1920x1080">1920 &times; 1080 — wide post</option>
+      </select>
+    </label>
+
+    <button id="export" type="button" class="big">Export PNG</button>
+    <p id="status" role="status"></p>
+    <p class="fine">Photos never leave your machine. Fonts: Noto Sans Display (SIL Open Font License), bundled under app/fonts.</p>
   </section>
 
-  <section class="stage" aria-label="Live preview">
-    <div class="stage-head">
-      <span>Live preview</span><span id="sizeLabel">1080 &times; 1080</span>
-    </div>
-    <div class="canvas-wrap"><canvas id="preview" width="1080" height="1080"></canvas></div>
-    <p class="hint">Preview updates as you type. Export downloads a full-resolution PNG — no upload, your photos never leave this machine.</p>
+  <section class="stage" aria-label="Cover preview">
+    <canvas id="cover" width="1080" height="1080"></canvas>
+    <p id="sizelabel">1080 &times; 1080</p>
   </section>
 </main>
-
-<footer class="foot">NEON GRID is an original design. No Rockstar Games logo, artwork, character or font is used. Bebas Neue is licensed under the SIL Open Font License (see fonts/OFL.txt).</footer>
-
-<input type="file" id="filePick" accept="image/*" hidden>
-<script src="grid.js"></script>
+<script type="module" src="./src/main.js"></script>
 </body>
 </html>
